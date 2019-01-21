@@ -58,6 +58,6 @@ rdfMatriceInertie <- function(im) {
   µ02 <- rdfMomentCentre(im, 0, 2)
   # creer le tenseur d'inertie (matrice)
   m <- matrix(c(µ20, µ11, µ11, µ02), nrow = 2, ncol = 2)
-  eigen(m)
+  eigen(m, only.values = TRUE)
 }
 

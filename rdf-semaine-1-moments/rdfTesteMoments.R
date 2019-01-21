@@ -21,15 +21,53 @@
 library ("EBImage")
 source ("rdfMoments.R")
 
-# Chargement d'une image d'un seul objet
-nom = "rdf-carre-10-30deg.png";
-image <- rdfReadGreyImage (nom)
-if (interactive ()) {
-  display (image, nom, method = "raster", all = TRUE)
+# Chargement de chaque image
+noms = c("./point.png",
+         "./rdf-carre-10-30deg.png",
+         "./rdf-carre-10-45deg.png",
+         "./rdf-carre-10.png",
+         "./rdf-carre-20.png",
+         "./rdf-carre-6.png",
+         "./rdf-chiffre-0.png",
+         "./rdf-chiffre-1.png",
+         "./rdf-chiffre-2.png",
+         "./rdf-chiffre-3.png",
+         "./rdf-chiffre-4.png",
+         "./rdf-chiffre-5.png",
+         "./rdf-chiffre-6.png",
+         "./rdf-chiffre-7.png",
+         "./rdf-chiffre-8.png",
+         "./rdf-chiffre-9.png",
+         "./rdf-patate.png",
+         "./rdf-rectangle-diagonal-lisse.png",
+         "./rdf-rectangle-diagonal.png",
+         "./rdf-rectangle-horizontal.png",
+         "./rdf-rectangle-vertical.png",
+         "./rdf-triangle-10-15deg.png",
+         "./rdf-triangle-10-45deg.png",
+         "./rdf-triangle-10-60deg.png",
+         "./rdf-triangle-10.png",
+         "./rdf-triangle-20.png")
+
+for(nom in noms){
+  print(paste("Image : ", nom))
+  image <- rdfReadGreyImage (nom)
+  
+  # Calcul de la surface de l'image
+  surface <- rdfSurface (image)
+  print(paste("Sa surface : ", surface))
+  
+  # Calcul du moment centré
+  moment <- rdfMatriceInertie(image) # transformation du changement de rpeète
+  
+  print(moment$values)
+  print("#############################################################")
+  if (interactive ()) {
+    display (image, nom, method = "raster", all = TRUE)
+  }
+  readline("Next ? > ")
 }
 
-# Calcul de la surface
-surface <- rdfSurface (image)
-moment <- rdfMatriceInertie(image) # transformation du changement de rpeète
+nom = "rdf-carre-10-30deg.png";
 
-print(moment)
+image <- rdfReadGreyImage (nom)

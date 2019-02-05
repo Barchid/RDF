@@ -1,0 +1,78 @@
+Ex 1
+	nbins : Comment on regroupe des valeurs de niveaux de gris similaires
+
+	Ce qui permet de faire la séparation d'un espace de dimension N en deux sous-espace, c'est un espace de dimension N-1
+	Une fois que ça c'est dit, on a un côté de l'espace qui est positif etl'autre négatif 
+	Une fois que séparation, un espace qui est la classe négative et l'autre positive 
+
+	Par rapport à référence :
+
+	Texture 0 :
+		seuil = 0.52
+		Pourcentage = 0.10
+
+	texture 1 :
+		seuil = 0.580
+		Pourcentage = 0.89
+
+	Texture 2 :
+		seuil = 0.33
+		Pourcentage = 12.36%
+		En négatif
+		
+	Texture 3 :
+		Seuil = 0.45
+		Pourcentage = 24.05
+		en négatif
+		
+	Texture 4 :
+		Osef, on ne peut pas trouver de seuil opti, c'est baisé de chez baisé 
+		Genre le mec il a cru qu'on pouvait 
+		Il est fou lui
+	
+Ex 2
+	Calculer moyenne des niveaux de gris de ses voisins
+	En R, une fonction s'appelle "filter"
+	Spécifique à l'utilisation de matrices de type image 
+	filter 
+		Fait la somme sur un voisinage de la valeur d'une image en un point multipliée parun masque du même oint 
+		Pour tout p appartennant à un voisinage 
+		Pour le point appartennant au voisinage, on fait le produit de la valeur du point de l'image multiplié par le masque au point 
+		
+		Calcul avec un masque qui contient des 1
+		Produit de l'image multiplié par un masque bourré de 1
+		Et faire la somme sur tout le voisinage 
+		filter quand on passe un masque qui vaut un, on a la somme des pixels 
+		
+		Si on passe un masque rempli de 1/N², on a la moyenne des valeurs des pixels (car matrice NxN)
+		
+
+	par rapport à référence :
+		
+	Texture 0 :
+		Seuil = 0.5
+		Pourcentage = 34.18
+		positif
+	
+	Texture 1 : 
+		Seuil : 0.375
+		Pourcentage : 8.56
+		Positif
+	
+	Texture 2 :
+		Seuil : 0.42
+		Pourcentage : 7.04
+		Negatif
+	
+	Texthre 3 :
+		Seuil : 0.3
+		Pourcentage : 4.85
+		Negatif
+	
+	Texture 4 :
+		Seuil : 0.3
+		Pourcentage : 4.06
+		Positif
+		
+Findinterval :
+	trouve les indices de vec pour lesquels x[i] est entre vec[i] et vec[i+1]

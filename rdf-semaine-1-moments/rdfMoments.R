@@ -52,12 +52,67 @@ rdfMomentCentre <- function (im, p, q) {
   as.numeric (rbind (x) %*% im %*% cbind (y))
 }
 
+rdfMomentCentreNormalise = function(im, p, q) {
+  �pq = rdfMomentCentre(im, p, q)
+  �00 = rdfMomentCentre(im, 0, 0)
+  �pq/(�00**(1+(p+q)/2))
+}
+
 rdfMatriceInertie <- function(im) {
   µ20 <- rdfMomentCentre(im, 2, 0)
   µ11 <- rdfMomentCentre(im, 1,1)
   µ02 <- rdfMomentCentre(im, 0, 2)
   # creer le tenseur d'inertie (matrice)
   m <- matrix(c(µ20, µ11, µ11, µ02), nrow = 2, ncol = 2)
-  eigen(m, only.values = TRUE)
+  eigen(m)
 }
 
+rdfMatriceInertieNormalise = function(im) {
+  µ20 <- rdfMomentCentreNormalise(im, 2, 0)
+  µ11 <- rdfMomentCentreNormalise(im, 1,1)
+  µ02 <- rdfMomentCentreNormalise(im, 0, 2)
+  # creer le tenseur d'inertie (matrice)
+  m <- matrix(c(µ20, µ11, µ11, µ02), nrow = 2, ncol = 2)
+  eigen(m)
+}
+
+rdfHu1 = function(im) {
+  n20 = rdfMomentCentreNormalise(im, 2, 0)
+  n02 = rdfMomentCentreNormalise(im, 0, 2)
+  
+  n20 + n02
+}
+
+rdfHu2 = function(im) {
+  n20 = rdfMomentCentreNormalise(im, 2, 0)
+  n02 = rdfMomentCentreNormalise(im, 0, 2)
+  n11 = rdfMomentCentreNormalise(im, 1, 1)
+  (n20 - n02)**2 + (2*n11)**2
+}
+
+rdfHu3 = function(im) {
+  n30 = rdfMomentCentreNormalise(im, 3, 0)
+  n12 = rdfMomentCentreNormalise(im, 1, 2)
+  n21 = rdfMomentCentreNormalise(im, 2, 1)
+  n03 = rdfMomentCentreNormalise(im, 0, 3)
+  
+  (n30 - 3 * n12)**2 + (3 * n21 - n03)**2
+}
+
+rdfHu4 = function(im) {
+  n30 = rdfMomentCentreNormalise(im, 3, 0)
+  n12 = rdfMomentCentreNormalise(im, 1, 2)
+  n21 = rdfMomentCentreNormalise(im, 2, 1)
+  n03 = rdfMomentCentreNormalise(im, 0, 3)
+  
+  (n30 + n12)**2 + (n21 + n03)**2
+}
+
+rdfHu5 = function(im) {
+  n30 = rdfMomentCentreNormalise(im, 3, 0)
+  n12 = rdfMomentCentreNormalise(im, 1, 2)
+  n21 = rdfMomentCentreNormalise(im, 2, 1)
+  n03 = rdfMomentCentreNormalise(im, 0, 3)
+  
+  (n30-3*n12)*(n30 + n12)*((n30 + n12)**2 - 3*(n21 + n03)**2) + (3 * n21 - n03)*(n21 + n03)*(3*(n30 + n12)**2 - (n21 + n03)**2)
+}

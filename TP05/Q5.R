@@ -29,19 +29,6 @@ image <- rdfReadGreyImage (nom)
 nbins <- 256
 h <- hist (as.vector (image), freq=FALSE, breaks = seq (0, 1, 1 / nbins))
 
-# Segmentation par binarisation 0.3
-seuil <- 0.35
-binaire30 <- (image - seuil) >= 0
-
-
-
-# Affichage des deux images
-#if (interactive ()) {
-#  display (binaire30, "image binaire 0.3")
-#  display (binaire35, "image binaire 0.35")
-#  display (binaire40, "image binaire 0.4")
-#}
-
 ###################################### Calculs omega 1 ###########################
 #
 nom <- "rdf-chiffre-0-8bits_omega1.png"
@@ -69,19 +56,6 @@ h2 <- hist (as.vector (omega2), freq=FALSE, breaks = seq (0, 1, 1 / nbins))
 # probabilité à priori de omega 2
 #### note : le nombre de pixels appartenant à omega deux (Nk) est donné par "sum(h2$counts[0:255])"
 p_omega2= sum(h2$counts[0:255])/ sum(h$counts[0:255])
-#################################################################################
-
-
-############## nombre de pixels caractérisés par niveau de gris 141 #############
-nbPxOmega1 = h1$counts[142]
-nbPxOmega2 = h2$counts[142]
-nbPxImage = h$counts[142]
-#################################################################################
-
-################# Calcul des probabilités conditionnelles #######################
-p_141_omega1 = h1$density[142] / sum(h1$counts[0:255]) # Pour omega 1
-p_141_omega2 = h2$density[142] / sum(h2$counts[0:255]) # Pour omega 2
-p_141_image = h$density[142] / sum(h$counts[0:255]) # Pour l'image
 #################################################################################
 
 
@@ -113,6 +87,11 @@ for (X in 1:255)
 }
 
 seuil = seuil_minimum_erreur/255 
+
+# afficher l'histogramme avec le seuil minimal
+h <- hist (as.vector (image), freq=FALSE, breaks = seq (0, 1, 1 / nbins))
+abline(v = seuil, col = "blue")
+
 binaire_Bayes <- (image - seuil) >= 0
 display (binaire_Bayes, "image binaire Bayes", method="raster", all=TRUE)
 #################################################################################
@@ -121,10 +100,21 @@ display (binaire_Bayes, "image binaire Bayes", method="raster", all=TRUE)
 nom = "rdf-chiffre-1-8bits.png"
 image = rdfReadGreyImage(nom)
 h <- hist (as.vector (image), freq=FALSE, breaks = seq (0, 1, 1 / nbins))
+abline(v = seuil, col="blue")
 binaire_Bayes <- (image - seuil) >= 0
 display (binaire_Bayes, "image binaire Bayes", method="raster", all=TRUE)
+#################################################################################
 
+
+############ Calcul taux d'erreur de classification #############################
 nom = "rdf-chiffre-1-8bits_classe_a_trouver.png"
 image = rdfReadGreyImage(nom)
 display (image, "Classe a trouver", method="raster", all=TRUE)
+
+taux = abs(image - binaire_Bayes)
+nbins <- 256
+hTaux <- hist (as.vector (taux), freq=FALSE, breaks = seq (0, 1, 1 / nbins) )
+
+accumulation = sum(hTaux$counts[1:256])/sum(hTaux$counts[2:256])
+display (taux, "Taux d'erreur", method="raster", all=TRUE)
 #################################################################################

@@ -113,7 +113,14 @@ for (X in 1:255)
   if (erreur[X+1] < minimum_erreur ) minimum_erreur = erreur[X+1]
   }
 
+# reporter le niveau de gris entre 0 et 1
 seuil = seuil_minimum_erreur/255 
+
+# afficher l'histogramme avec le seuil minimal
+h <- hist (as.vector (image), freq=FALSE, breaks = seq (0, 1, 1 / nbins))
+abline(v = seuil, col = "blue")
+
+# binarisation
 binaire_Bayes <- (image - seuil) >= 0
 display (binaire_Bayes, "image binaire Bayes", method="raster", all=TRUE)
 #################################################################################

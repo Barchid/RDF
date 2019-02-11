@@ -1,22 +1,3 @@
-# -----------------------------------------------------------------------
-# Extraction d'attributs de pixels pour la classification,
-# Module RdF, reconnaissance de formes
-# Copyleft (C) 2014, Universite Lille 1
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-# -----------------------------------------------------------------------
-
 # Chargement des fonctions externes
 library ("EBImage")
 source ("rdfSegmentation.R")
@@ -30,7 +11,6 @@ nbins <- 256
 h <- hist (as.vector (image), freq=FALSE, breaks = seq (0, 1, 1 / nbins))
 
 ###################################### Calculs omega 1 ###########################
-#
 nom <- "rdf-chiffre-0-8bits_omega1.png"
 omega1 <- rdfReadGreyImage (nom)
 
@@ -86,6 +66,8 @@ for (X in 1:255)
   if (erreur[X+1] < minimum_erreur ) minimum_erreur = erreur[X+1]
 }
 
+# on replace le seuil (en niveau de gris de 1 à 255) sur une valeur entre 0 et 1 qui sont
+# les valeurs qui composent l'histogramme de notre image
 seuil = seuil_minimum_erreur/255 
 
 # afficher l'histogramme avec le seuil minimal
@@ -107,14 +89,17 @@ display (binaire_Bayes, "image binaire Bayes", method="raster", all=TRUE)
 
 
 ############ Calcul taux d'erreur de classification #############################
+# Charger l'image du chiffre à trouver
 nom = "rdf-chiffre-1-8bits_classe_a_trouver.png"
 image = rdfReadGreyImage(nom)
 display (image, "Classe a trouver", method="raster", all=TRUE)
 
-taux = abs(image - binaire_Bayes)
+# Soustraire l'image des classes à trouver avec l'image
+diffImg = 1 - abs(image - binaire_Bayes)
 nbins <- 256
-hTaux <- hist (as.vector (taux), freq=FALSE, breaks = seq (0, 1, 1 / nbins) )
+hTaux <- hist (as.vector (diffImg), freq=FALSE, breaks = seq (0, 1, 1 / nbins) )
 
-accumulation = sum(hTaux$counts[1:256])/sum(hTaux$counts[2:256])
+tauxErreur = sum(hTaux$counts[2:256])/sum(hTaux$counts[1:256])
 display (taux, "Taux d'erreur", method="raster", all=TRUE)
+print(tauxErreur)
 #################################################################################

@@ -31,7 +31,7 @@ rdfReadGreyImage <- function (nom) {
 rdfMoyenneImage <- function (image, taille) {
   # cote du masque = 2 *taille + 1
   taille <- 2* taille + 1 # assurer impaire pour assurer qu'on ait un centre
-  masque <- array (taille ^ -2, c (taille, taille)) # initialise une matrice taillextaille avec éléments 1/taille^2
+  masque <- array (taille ^ -2, c (taille, taille)) # initialise une matrice taillextaille avec Ã©lÃ©ments 1/taille^2
   # somme de cette matrice = 1
   # image filtree
   filter2 (image, masque)
@@ -47,26 +47,29 @@ rdfTextureEcartType <- function (image, taille) {
   ecart / max (ecart)
 }
 
+# Ecart type des voisinages carres d'une image
+rdfTextureEcartTypeNonNorm <- function (image, taille) {
+  # carre de l'image moins sa moyenne
+  carre = (image - rdfMoyenneImage (image, taille)) ^ 2
+  # ecart type
+  ecart = sqrt (rdfMoyenneImage (carre, taille))
+  # normalise pour maximum a 1
+  ecart
+}
+
 # Calcul de l'histogramme 2D (log + normalise) de deux images
 rdfCalculeHistogramme2D <- function (image1, bins1, image2, bins2) {
   # Bins dans les deux images
   indices1 = findInterval (image1, seq (0, 1, 1 / bins1))
-  print(indices1)
   indices2 = findInterval (image2, seq (0, 1, 1 / bins2))
-  print(indices2)
   # Tableau de contingence
   counts <- table (indices1, indices2)
-  print(counts)
   # Extension en tableau 2D incluant les valeurs nulles
   liste <- as.data.frame (counts)
-  print(liste)
   h2d <- array (0, c (bins1, bins2))
-  print(h2d)
   h2d[cbind (liste[,1], liste[,2])] <- liste[,3]
-  print(h2d)
   # Passage en log
   h2d <- log (1 + h2d)
-  print(h2d)
   # normalise pour maximum a 1
   as.Image (h2d / max (h2d))
 }

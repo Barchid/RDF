@@ -17,6 +17,16 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # -----------------------------------------------------------------------
 
+# Chargement d'une image en niveaux de gris
+rdfReadGreyImage <- function (nom) {
+  image <- readImage (nom)
+  if (length (dim (image)) == 2) {
+    image
+  } else {
+    channel (image, 'red')
+  }
+}
+
 # Lit un contour dans un fichier texte
 rdfChargeFichierContour <- function (nom) {
   contour <- read.table (nom, )
@@ -33,6 +43,7 @@ rdfContour <- function (image) {
 rdfAlgorithmeCorde <- function (cont, dmax) {
   # Calcul des distances
   d <- rdfDistances (cont)
+  print(d)
   # Si distance maxi inferieur au seuil, ne garder que les extremites
   if (max (d) <= dmax) {
     c (head (cont, 1), tail (cont, 1))
@@ -53,8 +64,13 @@ rdfDistances <- function (cont) {
   # Points extremes
   debut = head (cont, 1)
   fin = tail (cont, 1)
-  # Calculer les distances: A MODIFIER !
-  rep (0, length (cont))
+  
+  # Equation de la droite entre les points début et fin
+  # de la forme y = mx + p
+  m = (Im(debut) - Im(fin))/(Re(debut) - Re(fin))
+  p = Im(debut) - ( m * Re(debut) )
+  print(sqrt(1 + m^2))
+  abs(Im((cont - debut) * Conj(fin - debut))) / Mod(fin - debut)
 }
 
 rdfDescFourierNormalisee = function(cont) {
@@ -62,5 +78,22 @@ rdfDescFourierNormalisee = function(cont) {
 }
 
 rdfAnnuleDescFourier = function(desc, ratio) {
+  if(ratio == 1){
+    result = desc
+  } else if (ratio == 0) {
+    result = complex(real = 0, imaginary = 0, length.out = length(desc))
+  } else {
+    
+    #On élimine les descripteurs de fourier les plus au centre
+    step = 1 / ratio
+    step = step * 2
+    indexDebut = length(desc) / step
+    indexFin = length(desc) - indexDebut
+    result = desc
+    for(i in indexDebut:indexFin)
+      result[i] = complex(0, 0)
+    result
+  }
   
+  result
 }

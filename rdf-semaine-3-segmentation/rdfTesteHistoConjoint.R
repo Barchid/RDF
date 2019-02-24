@@ -23,43 +23,73 @@ source ("rdfSegmentation.R")
 
 # Chargement d'une image
 # nom <- "rdf-2-classes-texture-0.png"
-# nom <- "rdf-2-classes-texture-1.png"
+nom <- "rdf-2-classes-texture-1.png"
 # nom <- "rdf-2-classes-texture-2.png"
 # nom <- "rdf-2-classes-texture-3.png"
-nom <- "rdf-2-classes-texture-4.png"
+# nom <- "rdf-2-classes-texture-4.png"
+
 image <- rdfReadGreyImage (nom)
 reference = rdfReadGreyImage("rdf-masque-ronds.png")
 
 # Calcul et affichage de son histogramme
-nbins <- 64
 
-nivTexture = rdfTextureEcartType(image, 5)
+nivTexture = rdfTextureEcartType(image, 2)
 
-h <- hist (nivTexture, breaks = seq (0, 1, 1 / nbins))
+display (nivTexture, "niveau de texture", method = "raster", all = TRUE)
 
-# Segmentation par binarisation
-# seuil = 0.52 # texture 0
-# seuil = 0.580 # texture 1
-# seuil = 0.33 # texture 2
-# seuil = 0.45 # texture 3
-# seuil = 0 # texture 4
+his2d = rdfCalculeHistogramme2D(image, 256, nivTexture, 256)
+display (his2d, "His2D", method = "raster", all = TRUE)
 
-seuilI = readline(prompt = "Entrez le seuil : ")
-seuil = as.double(seuilI)
-# si on change >= en <=, je change le rôle de blanc et noire
-binaire <- (image - seuil) >= 0 # si forme claire et fond foncé
-# binaire <- (image - seuil) <= 0 # si forme foncé et fond clair
+# traçage du seuil
+#lines(x = c(130, 155), y = c(0, 255), col = "red") # texture 0
+lines(x = c(130, 155), y = c(0, 255), col = "red") # texture 1
+#lines(x = c(130, 155), y = c(0, 255), col = "red") # texture 1
+#lines(x = c(130, 155), y = c(0, 255), col = "red") # texture 1
+#lines(x = c(130, 155), y = c(0, 255), col = "red") # texture 1
 
-# calculer la differecence par rapport à la reference
-difference = reference == binaire
-# calculer le pourcentage de difference avec l'image de reference
-# length(difference[difference==FALSE]) permet de compter le nombre de valeurs FALSE dans la matrice "difference"
-pourcentage = (length(difference[difference==FALSE])) / length(difference) * 100 
+# texture 1
+x1 = 130/255
+y1 = 0/255
+x2 = 155/255
+y2 = 255/255
 
-print(format(round(pourcentage,2), nsmall = 2))
 
-# Affichage des deux images
-if (interactive ()) {
-  display (image, nom, method = "raster", all = TRUE)
-  display (binaire, "image binaire", method = "raster", all = TRUE)
+a = -x2 + x1
+b = y2 - y1
+c = -(a*x1 + b*y1)
+
+
+for(i in 1:10) {
+  for(j in 1:10) {
+    for(k in 1:10) {
+      a = i/19
+      b = j/19
+      c =k/19
+      
+      print(a)
+      print(b)
+      print(c)
+      
+      binaire = a * image + b * nivTexture + c < 0
+      difference = reference == binaire
+      # calculer le pourcentage de difference avec l'image de reference
+      # length(difference[difference==FALSE]) permet de compter le nombre de valeurs FALSE dans la matrice "difference"
+      pourcentage = (length(difference[difference==FALSE])) / length(difference) * 100 
+      if(pourcentage <30){
+        
+        
+        display (binaire, "binarisation", method = "raster", all = TRUE)
+        break
+      }
+    }
+  }
 }
+
+print("fin")
+
+
+# élaboration du seuil
+
+#binaire = a * image + b * nivTexture + c < 0
+
+#display (binaire, "binarisation", method = "raster", all = TRUE)

@@ -22,34 +22,25 @@ library ("EBImage")
 source ("rdfContours.R")
 
 # Chargement d'un contour
-nom <- "rdf-carre-80.txt" # carré
-#nom <- "rdf-cercle-80.txt" # cercle
+#nom <- "rdf-carre-80.txt" # carré
+nom <- "rdf-patate.png" # cercle
 cont <- rdfChargeFichierContour (nom)
 cont = cont
 
+img <- rdfReadGreyImage (nom)
+cont = rdfContour(img)
+
+
 # Afficher le contour
 plot (cont, main = "Contour", type = "o", asp = 1, col = "red", ylim = rev (range (Im (cont))))
+
+corde1 = rdfAlgorithmeCorde(cont, 1)
+corde05 = rdfAlgorithmeCorde(cont, 0.5)
+plot (corde1, main = "Algorithme des cordes à distance maximale de 1", type = "o", asp = 1, col = "red", ylim = rev (range (Im (corde1))))
+plot (corde05, main = "Algorithme des cordes à distance maximale de 0.5", type = "o", asp = 1, col = "red", ylim = rev (range (Im (corde05))))
 
 # cercle bleu
 #lines(cont[seq(0, length(cont), by = 4)], col= "blue")
 
 #lines(cont[seq(0, length(cont), by = 8)], col = "green")
 
-
-fourier = fft(cont) / length(cont)
-
-#fourier[1] = fourier[1] + complex(real = 4, imaginary = 4)
-
-# afficher reconstitution fourier
-inver = fft(fourier, inverse = TRUE) # ca vaut cont
-plot (inver, main = "Inversion transformée de Fourier", type = "o", asp = 1, col = "blue", ylim = rev (range (Im (inver))))
-Mod()
-#annule desc fourier
-fourierSimplifie = rdfAnnuleDescFourier(fourier, 0.1)
-inverSimplifie = fft(fourierSimplifie, inverse = TRUE)
-plot (inverSimplifie, main = "Inversion transformée de Fourier simplifiée", type = "o", asp = 1, col = "purple", ylim = rev (range (Im (inverSimplifie))))
-
-#print(fourier)
-#print("Inverse")
-#print(inver)
-#fourier[seq(20,40)] = 0 # on jarte les 20 trucs du milieu

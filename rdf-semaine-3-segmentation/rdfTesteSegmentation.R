@@ -31,21 +31,23 @@ image <- rdfReadGreyImage (nom)
 reference = rdfReadGreyImage("rdf-masque-ronds.png")
 
 # Calcul et affichage de son histogramme
-nbins <- 64
-h <- hist (as.vector (image), breaks = seq (0, 1, 1 / nbins))
+nbins <- 256
+h <- hist (as.vector (image), breaks = seq (0, 1, 1 / 256))
 
 # Segmentation par binarisation
 # seuil = 0.52 # texture 0
 # seuil = 0.580 # texture 1
 # seuil = 0.33 # texture 2
 # seuil = 0.45 # texture 3
-# seuil = 0 # texture 4
+seuil = 0 # texture 4
 
-# si on change >= en <=, je change le rôle de blanc et noire
-# binaire <- (image - seuil) >= 0 # si forme claire et fond foncé
-binaire <- (image - seuil) <= 0 # si forme foncé et fond clair
+abline(v = seuil, col = "blue")
 
-# calculer la differecence par rapport à la reference
+# si on change >= en <=, je change le r?le de blanc et noire
+# binaire <- (image - seuil) >= 0 # si forme claire et fond fonc?
+binaire <- (image - seuil) <= 0 # si forme fonc? et fond clair
+
+# calculer la differecence par rapport ? la reference
 difference = reference == binaire
 # calculer le pourcentage de difference avec l'image de reference
 # length(difference[difference==FALSE]) permet de compter le nombre de valeurs FALSE dans la matrice "difference"

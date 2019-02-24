@@ -94,11 +94,14 @@ nom = "rdf-chiffre-1-8bits_classe_a_trouver.png"
 image = rdfReadGreyImage(nom)
 display (image, "Classe a trouver", method="raster", all=TRUE)
 
-# Soustraire l'image des classes à trouver avec l'image
+# Soustraire l'image des classes à trouver avec la binarisation
+# le 1 - abs(...) sert à faire en sorte que les pixels appartenant à la bonne classe
+# apparaissent avec un niveau de gris de 0 dans le diffImg afin de calculer le taux par après
 diffImg = 1 - abs(image - binaire_Bayes)
 nbins <- 256
 hTaux <- hist (as.vector (diffImg), freq=FALSE, breaks = seq (0, 1, 1 / nbins) )
 
+# taux d'erreur = Total des pixels n'appartenant pas à la bonne classe divisé par le total des pixels
 tauxErreur = sum(hTaux$counts[2:256])/sum(hTaux$counts[1:256])
 display (taux, "Taux d'erreur", method="raster", all=TRUE)
 print(tauxErreur)

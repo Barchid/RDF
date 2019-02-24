@@ -22,36 +22,38 @@ library ("EBImage")
 source ("rdfSegmentation.R")
 
 # Chargement d'une image
-# nom <- "rdf-2-classes-texture-0.png"
+nom <- "rdf-2-classes-texture-0.png"
 # nom <- "rdf-2-classes-texture-1.png"
 # nom <- "rdf-2-classes-texture-2.png"
 # nom <- "rdf-2-classes-texture-3.png"
-nom <- "rdf-2-classes-texture-4.png"
+# nom <- "rdf-2-classes-texture-4.png"
 image <- rdfReadGreyImage (nom)
 reference = rdfReadGreyImage("rdf-masque-ronds.png")
 
 # Calcul et affichage de son histogramme
-nbins <- 64
+nbins <- 256
 
 nivTexture = rdfTextureEcartType(image, 2)
-display (nivTexture, "bite", method = "raster", all = TRUE)
+display (nivTexture, method = "raster", all = TRUE)
 
 h <- hist (nivTexture, breaks = seq (0, 1, 1 / nbins))
 
 # Segmentation par binarisation
-# seuil = 0.52 # texture 0
-# seuil = 0.580 # texture 1
-# seuil = 0.33 # texture 2
-# seuil = 0.45 # texture 3
-# seuil = 0 # texture 4
+seuil = 0.5 # texture 0
+# seuil = 0.375 # texture 1
+# seuil = 0.42 # texture 2
+# seuil = 0.3 # texture 3
+# seuil = 0.3 # texture 4
 
-seuilI = readline(prompt = "Entrez le seuil : ")
-seuil = as.double(seuilI)
-# si on change >= en <=, je change le rôle de blanc et noire
-# binaire <- (nivTexture - seuil) >= 0 # si forme claire et fond foncé
-binaire <- (nivTexture - seuil) <= 0 # si forme foncé et fond clair
+abline(v = seuil, col="blue")
 
-# calculer la differecence par rapport à la reference
+# seuilI = readline(prompt = "Entrez le seuil : ")
+# seuil = as.double(seuilI)
+# si on change >= en <=, je change le r?le de blanc et noire
+# binaire <- (nivTexture - seuil) >= 0 # si forme claire et fond fonc?
+binaire <- (nivTexture - seuil) <= 0 # si forme fonc? et fond clair
+
+# calculer la differecence par rapport ? la reference
 difference = reference == binaire
 # calculer le pourcentage de difference avec l'image de reference
 # length(difference[difference==FALSE]) permet de compter le nombre de valeurs FALSE dans la matrice "difference"

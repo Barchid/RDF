@@ -76,3 +76,47 @@ Ex 2
 		
 Findinterval :
 	trouve les indices de vec pour lesquels x[i] est entre vec[i] et vec[i+1]
+	
+Calculer histogramme 1D
+	Un attribut sur X
+	Et ordonnnée, tu as un nombre 
+	On regarde combien de pixel ont un attribut là 
+	
+En 2D
+	
+	On a un attribut, un autre et le nombre 
+	Donc i n traçait un histo
+		On aura 3D avec un attribut, un autre 
+		
+Solution pour éviter de faire un truc dur comme ça 
+	Courbe de niveau pour représenter les montagnes 
+	Montrer accuulation de pixels qui ont cet attribut là et là 
+	Courbe de niveau représente l'équivalent de l'accumulation d'un nombre de point 
+	
+Choix dans le TP 
+	Das une case donnée, on a une valeur comprise entre 0 et N 
+	Représenté avec 
+	Niveau de gris d'un pixel 
+	
+	Beaucoup de pixel qui ont un attribut X et Y 
+	
+	Quand j'ai une droite direct, je fais une droite directe et donc attribut 2 n'est pas significatif 
+	
+Le fait d'utiliser les deux attributs permet de voir un meilleur résultat 
+
+Dans espace d'attribut à N dimensions, la surface de séparation est un hyperplan de dimension N-1
+
+Dans un cas, il y a une image où je n'ai pas besoin du nieau de gris (texture 04) --> la droite sera vertical/horizontal car osef niveau de gris
+
+
+Surface de séparation 
+	C'est une droite 
+	Equation de la droite : a* attribut1 + b*attribut2 + c = 0
+	Ligne de séparation 
+	Quand on a un truc supérieur à 0, c'est qu'on a un point qui est à côté 
+	On regarde le signe de l'équation là par les attribbuts du pixel
+	
+	Ce truc là se généralise par toutes les dimensions
+	trouver a, b et c 
+	
+	Dimensions N : un coef sur chaque attribut + une constante !!!!

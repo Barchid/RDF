@@ -23,21 +23,21 @@ source ("rdfContours.R")
 
 # Chargement d'un contour
 #nom <- "rdf-carre-80.txt" # carré
-nom <- "rdf-patate.png" # cercle
+nom <- "rdf-cercle-80.txt" # cercle
 cont <- rdfChargeFichierContour (nom)
 cont = cont
 
-img <- rdfReadGreyImage (nom)
-cont = rdfContour(img)
+#img <- rdfReadGreyImage (nom)
+#cont = rdfContour(img)
 
 
 # Afficher le contour
-plot (cont, main = "Contour", type = "o", asp = 1, col = "red", ylim = rev (range (Im (cont))))
+plot (cont, main = "Algorithme de la corde", type = "o", asp = 1, col = "red", ylim = rev (range (Im (cont))))
 
 corde1 = rdfAlgorithmeCorde(cont, 1)
 corde05 = rdfAlgorithmeCorde(cont, 0.5)
-plot (corde1, main = "Algorithme des cordes à distance maximale de 1", type = "o", asp = 1, col = "red", ylim = rev (range (Im (corde1))))
-plot (corde05, main = "Algorithme des cordes à distance maximale de 0.5", type = "o", asp = 1, col = "red", ylim = rev (range (Im (corde05))))
+lines (corde1, main = "Algorithme des cordes à distance maximale de 1", type = "o", asp = 1, col = "blue", ylim = rev (range (Im (corde1))))
+lines (corde05, main = "Algorithme des cordes à distance maximale de 0.5", type = "o", asp = 1, col = "black", ylim = rev (range (Im (corde05))))
 
 # cercle bleu
 #lines(cont[seq(0, length(cont), by = 4)], col= "blue")

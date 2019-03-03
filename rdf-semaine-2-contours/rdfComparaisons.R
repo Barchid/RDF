@@ -3,11 +3,27 @@ library ("EBImage")
 source ("rdfContours.R")
 
 noms = c(
-  #"rdf-carre-20.png"
-  "rdf-croix.png",
-  "rdf-patate.png",
-  "rdf-rectangle-horizontal.png",
-  "rdf-triangle-20.png"
+  "rdf-carre-20.png"
+  #"rdf-croix.png"
+  #"rdf-patate.png"
+  #"rdf-rectangle-horizontal.png"
+  #"rdf-triangle-20.png"
+)
+
+fourierSimpli = c(
+  0.5,
+  0.5,
+  0.5,
+  0.5,
+  0.5
+)
+
+cordeCoef = c(
+  0.5,
+  0.5,
+  0.5,
+  0.5,
+  0.5
 )
 
 for(nom in noms) {
@@ -15,16 +31,17 @@ for(nom in noms) {
   cont=rdfContour(image)
   
   # Afficher le contour
-  plot (cont, main = "Contour", type = "o", asp = 1, col = "black", ylim = rev (range (Im (cont))))  
+  plot (cont, main = "Contour", type = "o", asp = 1, col = "red", ylim = rev (range (Im (cont))))  
   
   #Transormée de Fourier
   fourier = fft(cont) / length(cont)
-  fourierSimplifie = rdfAnnuleDescFourier(fourier, 0.5)
+  fourierSimplifie = rdfAnnuleDescFourier(fourier, 0.8)
   inverSimplifie = fft(fourierSimplifie, inverse = TRUE)
-  lines (inverSimplifie, main = "Inversion transformée de Fourier simplifiée", type = "o", asp = 1, col = "red", ylim = rev (range (Im (inverSimplifie))))
+  plot (inverSimplifie, main = "Inversion transformée de Fourier simplifiée", type = "o", asp = 1, col = "red", ylim = rev (range (Im (inverSimplifie))))
   
   #Algorithme de la corde
-  corde1 = rdfAlgorithmeCorde(cont, 1)
-  lines (corde1, main = "Algorithme de la corde", type = "o", asp = 1, col = "green", ylim = rev (range (Im (corde1))))
+  corde = rdfAlgorithmeCorde(cont, 0)
+  
+  plot (corde, main = "Algorithme de la corde", type = "o", asp = 1, col = "red", ylim = rev (range (Im (corde))))
 }
 

@@ -38,12 +38,11 @@ plot (cont, main = "Contour", type = "o", asp = 1, col = "red", ylim = rev (rang
 
 fourier = fft(cont) / length(cont)
 
-#fourier[1] = fourier[1] + complex(real = 4, imaginary = 4)
+fourier[1] = fourier[1] + complex(real = 4, imaginary = 14)
 
 # afficher reconstitution fourier
 inver = fft(fourier, inverse = TRUE) # ca vaut cont
-plot (inver, main = "Inversion transformée de Fourier", type = "o", asp = 1, col = "blue", ylim = rev (range (Im (inver))))
-Mod()
+plot (inver, main = "Inversion transformée de Fourier avec ajout d'une constante complexe", type = "o", asp = 1, col = "blue", ylim = rev (range (Im (inver))))
 #annule desc fourier
 fourierSimplifie = rdfAnnuleDescFourier(fourier, 0.1)
 inverSimplifie = fft(fourierSimplifie, inverse = TRUE)

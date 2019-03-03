@@ -43,7 +43,6 @@ rdfContour <- function (image) {
 rdfAlgorithmeCorde <- function (cont, dmax) {
   # Calcul des distances
   d <- rdfDistances (cont)
-  print(d)
   # Si distance maxi inferieur au seuil, ne garder que les extremites
   if (max (d) <= dmax) {
     c (head (cont, 1), tail (cont, 1))
@@ -69,7 +68,6 @@ rdfDistances <- function (cont) {
   # de la forme y = mx + p
   m = (Im(debut) - Im(fin))/(Re(debut) - Re(fin))
   p = Im(debut) - ( m * Re(debut) )
-  print(sqrt(1 + m^2))
   abs(Im((cont - debut) * Conj(fin - debut))) / Mod(fin - debut)
 }
 

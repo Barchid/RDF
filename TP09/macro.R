@@ -7,7 +7,8 @@ lettreFromNumero = function(numero) {
 }
 
 #Fonction qui retourne l'indice de la lettre associée à la question la plus informative pour
-# le sous-ensemble de mots courant, ainsi que la partition du sous-ensemble
+# l'ensemble de mots courant, ainsi que la partition de l'ensemble
+#
 # ici, on recherche la lettre qui maximise l'entropie de sorte qu'on arrive à séparer l'ensemble de
 # mots "e" en deux sous-ensembles les plus équitables possibles (le mieux serait de trouver des questions
 # pour obtenir des ensembles equiprobables)
@@ -41,9 +42,8 @@ partage = function(e) {
   list("indiceLettre" = bestLetter, "contient" = contient, "neContientPas" = neContientPas)
 }
 
-# fonction qui partage un ensemble en deux sous-ensembles
 partageIteratif = function(e) {
-  sousEnsembles = list()
+  sousEnsembles = list() # liste des sous-ensembles à retourner
   sousEnsembles[[1]] = e
   
   # index de parcourt des sous-ensembles à diviser
@@ -79,8 +79,6 @@ jeu = function() {
   # Chargement de la base de noms d'animaux
   source ("rdfAnimaux.txt") # crée un variable "noms"
   
-  cat("Wesh bien ou quoi maggle ? Je vais te niquer !")
-  
   e = noms
   
   # tant que je ne suis pas sur un noeud pur
@@ -89,7 +87,7 @@ jeu = function() {
     
     lettre = lettreFromNumero(parts$indiceLettre)
     
-    cat("Ké salope, ton mot, est-ce qu'il a la lettre ", lettre, " ? 1 pour 'Oui', autre pour 'non'")
+    cat("Est-ce que ton mot possède la lettre suivante : ", lettre, " ? 1 pour 'Oui', autre pour 'non'")
     answer = scan()
     
     if(answer == 1) {
@@ -100,13 +98,11 @@ jeu = function() {
     }
   }
   
-  cat("J'AI TROUVE FRAIR !!!!")
-  
   if(length(e) == 0) {
-    cat("Gros, tu m'as couillé, ton mot n'existe pas.")
+    cat("Aucun mot n'a été trouvé.")
   }
   else {
-    cat("Le mot que tu as, c'est : ", e[1])
+    cat("J'ai trouvé, ton mot est : ", e[1])
   }
 }
 
@@ -134,5 +130,4 @@ induction = function(e, espace) {
   }
 }
 
-source ("rdfAnimaux.txt") # crée un variable "noms"
-res = induction(noms, "")
+induction(noms, "")

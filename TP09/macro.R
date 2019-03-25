@@ -110,15 +110,29 @@ jeu = function() {
   }
 }
 
-jeu()
+#jeu()
 
-induction = function(e) {
+induction = function(e, espace) {
   # SI [ tous les éléments de e sont de la même catégorie]
+  if(length(e) <= 1) {
     # Construire la feuille associée à la classe
-  
+    cat("\n ", espace, e)
+  }
   # SINON
+  else {
     # Séparer e en 2 parties selon qui possède la lettre qui divise correctement e 
-    # ici, le couple (attribut;test) est attribut = lettre, test = mot contient lettre ?
-    # POUR CHAQUE partition
-      # induction sur la partition
+    parts = partage(e)
+    e1 = parts$contient
+    e2 = parts$neContientPas
+    cat("\n ", espace, lettreFromNumero(parts$indiceLettre))
+    
+    
+    # induction sur la partition
+    espace = paste(espace, " ")
+    induction(e1, espace)
+    induction(e2, espace)
+  }
 }
+
+source ("rdfAnimaux.txt") # crée un variable "noms"
+res = induction(noms, "")

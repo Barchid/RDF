@@ -92,15 +92,18 @@ partage = function(etiquettes, stackedFaces, ensemble) {
   }
   
   ens = separation(stackedFaces, ensemble, maxI, maxJ)
-  if(maxDelta == 0) {
-    print("Ensemble")
-    print(H)
-    # print(maxI)
-    # print(maxJ)
-    # print("")
-    # print(length(ens$contient))
-    # print(length(ens$neContientPas))
-  }
+  # if(maxDelta == 0) {
+  #   print("Ensemble")
+  #   print(H)
+  #   # print(maxI)
+  #   # print(maxJ)
+  #   # print("")
+  #   # print(length(ens$contient))
+  #   # print(length(ens$neContientPas))
+  # }
+  ens$contient = ens$contient[!is.na(ens$contient)]
+  ens$neContientpas = ens$neContientPas[!is.na(ens$neContientPas)]
+  
   list('x' = maxI, 'y' = maxJ, 'contient' = ens$contient, 'neContientPas' = ens$neContientPas)
 }
 
@@ -112,7 +115,6 @@ for (i in 0:19) { for (j in 0:19) {
   stackedFaces[,,(i*20 + j + 1)] = allFaces[(1+j*33) : ((j+1)*33), (1+i*40) : ((i+1)*40)]
 }
 }
-
 
 
 # ON FEY L'1DUKSSION
@@ -172,7 +174,7 @@ I = seq(1,400)
 stackedFacesI = stackedFaces[,,I]
 
 # Affichage de l'image de test
-testPicture = as.Image(stackedFaces[,,12])
+testPicture = as.Image(stackedFaces[,,111])
 display(as.Image(testPicture), method = "raster", all = TRUE)
 
 # Démarrage de l'algorithme
